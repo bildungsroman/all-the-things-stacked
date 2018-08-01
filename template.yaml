@@ -694,6 +694,8 @@ Resources:
     Properties:
       QueueName: !Sub ${AWS::StackName}-queue9C8B3DAF
       KmsMasterKeyId: alias/aws/sqs
+    Metadata:
+      StackeryName: iNameYouQueue
   stream44E5D3A7:
     Type: AWS::Kinesis::Stream
     Properties:
@@ -704,6 +706,53 @@ Resources:
         KeyId: alias/aws/kinesis
     Metadata:
       StackeryName: streamingService
+  topicF3E10E63:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub ${AWS::StackName}-topicF3E10E63
+  table3C0EA155:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+      TableName: !Sub ${AWS::StackName}-table3C0EA155
+  function96F17510:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub ${AWS::StackName}-function96F17510
+      Description: !Sub
+        - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Function ${ResourceName}
+        - ResourceName: function96F17510
+      CodeUri: src/function96F17510
+      Handler: index.handler
+      Runtime: nodejs8.10
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Policies:
+        - AWSXrayWriteOnlyAccess
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt topicF3E10E63.TopicName
+      Environment:
+        Variables:
+          TOPIC_NAME: !GetAtt topicF3E10E63.TopicName
+          TOPIC_ARN: !Ref topicF3E10E63
+      Events:
+        table3C0EA155:
+          Type: DynamoDB
+          Properties:
+            Stream: !GetAtt table3C0EA155.StreamArn
+            StartingPosition: TRIM_HORIZON
+            BatchSize: 1
 Parameters:
   StackeryStackTagName:
     Type: String
