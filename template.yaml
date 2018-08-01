@@ -689,6 +689,21 @@ Resources:
           Principal:
             Service: ecs-tasks.amazonaws.com
           Action: sts:AssumeRole
+  queue9C8B3DAF:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub ${AWS::StackName}-queue9C8B3DAF
+      KmsMasterKeyId: alias/aws/sqs
+  stream44E5D3A7:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      Name: !Sub ${AWS::StackName}-stream44E5D3A7
+      ShardCount: 1
+      StreamEncryption:
+        EncryptionType: KMS
+        KeyId: alias/aws/kinesis
+    Metadata:
+      StackeryName: streamingService
 Parameters:
   StackeryStackTagName:
     Type: String
