@@ -348,6 +348,8 @@ Resources:
     Type: AWS::S3::Bucket
     Properties:
       BucketName: !Sub ${AWS::StackName}-objectstoree3399fa4
+    Metadata:
+      StackeryName: storeTheThings
   cdn720D9D6OriginAccessIdentity:
     Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
     Properties:
