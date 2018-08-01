@@ -85,7 +85,9 @@ Resources:
         - Key: Name
           Value: !Sub
             - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Virtual Network ${ResourceName}
-            - ResourceName: virtualNetwork53CF3C38
+            - ResourceName: iAmVirtual
+    Metadata:
+      StackeryName: iAmVirtual
   virtualNetwork53CF3C38PrivateSubnet1:
     Metadata:
       StackeryManaged: true
@@ -104,7 +106,7 @@ Resources:
         - Key: Name
           Value: !Sub
             - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Virtual Network ${ResourceName} Private Subnet 1
-            - ResourceName: virtualNetwork53CF3C38
+            - ResourceName: iAmVirtual
       VpcId: !Ref virtualNetwork53CF3C38
   virtualNetwork53CF3C38PrivateSubnet2:
     Metadata:
@@ -124,7 +126,7 @@ Resources:
         - Key: Name
           Value: !Sub
             - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Virtual Network ${ResourceName} Private Subnet 2
-            - ResourceName: virtualNetwork53CF3C38
+            - ResourceName: iAmVirtual
       VpcId: !Ref virtualNetwork53CF3C38
   virtualNetwork53CF3C38PublicSubnet1:
     Metadata:
@@ -145,7 +147,7 @@ Resources:
         - Key: Name
           Value: !Sub
             - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Virtual Network ${ResourceName} Public Subnet 1
-            - ResourceName: virtualNetwork53CF3C38
+            - ResourceName: iAmVirtual
       VpcId: !Ref virtualNetwork53CF3C38
   virtualNetwork53CF3C38PublicSubnet2:
     Metadata:
@@ -166,7 +168,7 @@ Resources:
         - Key: Name
           Value: !Sub
             - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Virtual Network ${ResourceName} Public Subnet 2
-            - ResourceName: virtualNetwork53CF3C38
+            - ResourceName: iAmVirtual
       VpcId: !Ref virtualNetwork53CF3C38
   virtualNetwork53CF3C38PrivateSubnet1NatGatewayEIP:
     Metadata:
@@ -190,7 +192,7 @@ Resources:
         - Key: Name
           Value: !Sub
             - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Virtual Network ${ResourceName} Private Subnet 1 Route Table
-            - ResourceName: virtualNetwork53CF3C38
+            - ResourceName: iAmVirtual
       VpcId: !Ref virtualNetwork53CF3C38
   virtualNetwork53CF3C38PrivateSubnet1NatGatewayRoute:
     Metadata:
@@ -229,7 +231,7 @@ Resources:
         - Key: Name
           Value: !Sub
             - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Virtual Network ${ResourceName} Private Subnet 2 Route Table
-            - ResourceName: virtualNetwork53CF3C38
+            - ResourceName: iAmVirtual
       VpcId: !Ref virtualNetwork53CF3C38
   virtualNetwork53CF3C38PrivateSubnet2NatGatewayRoute:
     Metadata:
@@ -255,7 +257,7 @@ Resources:
         - Key: Name
           Value: !Sub
             - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Virtual Network ${ResourceName} Public Subnets Internet Gateway
-            - ResourceName: virtualNetwork53CF3C38
+            - ResourceName: iAmVirtual
   virtualNetwork53CF3C38PublicSubnetsInternetGatewayAttachment:
     Metadata:
       StackeryManaged: true
@@ -272,7 +274,7 @@ Resources:
         - Key: Name
           Value: !Sub
             - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Virtual Network ${ResourceName} Public Subnets Route Table
-            - ResourceName: virtualNetwork53CF3C38
+            - ResourceName: iAmVirtual
       VpcId: !Ref virtualNetwork53CF3C38
   virtualNetwork53CF3C38PublicSubnetsInternetGatewayRoute:
     Metadata:
