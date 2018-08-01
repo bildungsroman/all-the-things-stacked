@@ -19,6 +19,8 @@ Resources:
       Policies:
         - AWSXrayWriteOnlyAccess
         - AWSLambdaENIManagementAccess
+        - DynamoDBCrudPolicy:
+            TableName: !Ref tableD7A4016B
       Events:
         apiFE76C470:
           Type: Api
@@ -32,6 +34,10 @@ Resources:
         SubnetIds:
           - !Ref virtualNetwork53CF3C38PrivateSubnet1
           - !Ref virtualNetwork53CF3C38PrivateSubnet2
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref tableD7A4016B
+          TABLE_ARN: !GetAtt tableD7A4016B.Arn
     Metadata:
       StackeryName: getWelcomePage
   apiFE76C470:
@@ -82,6 +88,12 @@ Resources:
             Schedule: rate(1 minute)
           Metadata:
             StackeryName: timeMe
+      Environment:
+        Variables:
+          DB_INSTANCE: !Ref databaseCCF34AC2
+          DB_ADDRESS: !GetAtt databaseCCF34AC2.Endpoint.Address
+          DB_PORT: !GetAtt databaseCCF34AC2.Endpoint.Port
+          DB_ARN: !Sub arn:aws:rds:${AWS::Region}:${AWS::AccountId}:db:${databaseCCF34AC2}
     Metadata:
       StackeryName: logErrors
   virtualNetwork53CF3C38:
@@ -368,6 +380,76 @@ Resources:
             Resource: !Sub
               - ${BucketArn}/*
               - BucketArn: !GetAtt objectStoreE3399FA4.Arn
+  tableD7A4016B:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+      TableName: !Sub ${AWS::StackName}-tableD7A4016B
+    Metadata:
+      StackeryName: aTable
+  databaseCCF34AC2:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllocatedStorage: '5'
+      AllowMajorVersionUpgrade: true
+      AutoMinorVersionUpgrade: true
+      BackupRetentionPeriod: '0'
+      CopyTagsToSnapshot: true
+      DBInstanceClass: db.t2.micro
+      DBSubnetGroupName: !Ref databaseCCF34AC2SubnetGroup
+      Engine: postgres
+      EngineVersion: '10.3'
+      MasterUsername: root
+      MasterUserPassword: dsfgvsdfdsf
+      MultiAZ: false
+      PubliclyAccessible: true
+      StorageType: gp2
+      Tags:
+        - Key: Name
+          Value: !Sub
+            - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Database ${ResourceName}
+            - ResourceName: AllYourBaseIsBelongToUs
+      VPCSecurityGroups:
+        - !Ref databaseCCF34AC2SecurityGroup
+    Metadata:
+      StackeryName: AllYourBaseIsBelongToUs
+  databaseCCF34AC2SubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: !Sub
+        - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Database ${ResourceName} VPC Subnets
+        - ResourceName: databaseCCF34AC2
+      SubnetIds: !Ref DefaultVPCSubnets
+      Tags:
+        - Key: Name
+          Value: !Sub
+            - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Database ${ResourceName} VPC Subnets
+            - ResourceName: databaseCCF34AC2
+  databaseCCF34AC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Database Security Group
+      SecurityGroupIngress:
+        CidrIp: 0.0.0.0/0
+        FromPort: 5432
+        IpProtocol: tcp
+        ToPort: 5432
+      Tags:
+        - Key: Name
+          Value: !Sub
+            - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Database ${ResourceName} VPC Security Group
+            - ResourceName: AllYourBaseIsBelongToUs
+      VpcId: !Ref DefaultVPCId
 Parameters:
   StackeryStackTagName:
     Type: String
@@ -381,6 +463,12 @@ Parameters:
   StackeryDeploymentNamespace:
     Type: String
     Description: Stackery Deployment Namespace (injected by Stackery at deployment time)
+  DefaultVPCId:
+    Type: AWS::EC2::VPC::Id
+    Description: AWS account-specific default VPC ID (injected by Stackery at deployment time)
+  DefaultVPCSubnets:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: AWS account-specific default VPC subnets (injected by Stackery at deployment time)
 Metadata:
   StackeryErrorsTargets:
     function8E6C5467: {}
