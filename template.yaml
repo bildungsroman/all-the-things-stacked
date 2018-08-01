@@ -305,6 +305,67 @@ Resources:
     Properties:
       RouteTableId: !Ref virtualNetwork53CF3C38PublicSubnetsRouteTable
       SubnetId: !Ref virtualNetwork53CF3C38PublicSubnet2
+  cdn720D9D6:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Aliases:
+          - !Sub cdn720d9d6.${StackeryDeploymentNamespace}.stackery-stacks.io
+        DefaultCacheBehavior:
+          Compress: true
+          ForwardedValues:
+            Cookies:
+              Forward: none
+            QueryString: false
+          TargetOriginId: StackeryCDN
+          ViewerProtocolPolicy: redirect-to-https
+        Enabled: true
+        PriceClass: PriceClass_100
+        ViewerCertificate:
+          AcmCertificateArn: !Ref cdn720D9D6SSLCertificate
+          SslSupportMethod: sni-only
+        Origins:
+          - DomainName: !GetAtt objectStoreE3399FA4.DomainName
+            Id: StackeryCDN
+            S3OriginConfig:
+              OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${cdn720D9D6OriginAccessIdentity}
+  cdn720D9D6SSLCertificate:
+    Type: Custom::StackeryUsEast1SSLCertificate
+    Properties:
+      ServiceToken: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:stackery-agent-commander
+      DomainName: !Sub cdn720d9d6.${StackeryDeploymentNamespace}.stackery-stacks.io
+      DomainValidationOptions:
+        - DomainName: !Sub cdn720d9d6.${StackeryDeploymentNamespace}.stackery-stacks.io
+          ValidationDomain: stackery-stacks.io
+  cdn720D9D6StackeryStacksDomain:
+    Type: Custom::StackeryStacksDomain
+    Properties:
+      ServiceToken: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:stackery-agent-commander
+      SubdomainName: !Sub cdn720d9d6.${StackeryDeploymentNamespace}
+      CName: !GetAtt cdn720D9D6.DomainName
+    Condition: cdn720D9D6StackeryStacksDomain
+  objectStoreE3399FA4:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub ${AWS::StackName}-objectstoree3399fa4
+  cdn720D9D6OriginAccessIdentity:
+    Type: AWS::CloudFront::CloudFrontOriginAccessIdentity
+    Properties:
+      CloudFrontOriginAccessIdentityConfig:
+        Comment: Stackery
+  cdn720D9D6BucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref objectStoreE3399FA4
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Sub arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${cdn720D9D6OriginAccessIdentity}
+            Action: s3:GetObject
+            Resource: !Sub
+              - ${BucketArn}/*
+              - BucketArn: !GetAtt objectStoreE3399FA4.Arn
 Parameters:
   StackeryStackTagName:
     Type: String
@@ -315,6 +376,17 @@ Parameters:
   StackeryEnvironmentAPIGatewayStageName:
     Type: String
     Description: Environment name used for API Gateway Stage names (injected by Stackery at deployment time)
+  StackeryDeploymentNamespace:
+    Type: String
+    Description: Stackery Deployment Namespace (injected by Stackery at deployment time)
 Metadata:
   StackeryErrorsTargets:
     function8E6C5467: {}
+Conditions:
+  cdn720D9D6StackeryStacksDomain: !Or
+    - !Equals
+      - 'false'
+      - 'false'
+    - !Equals
+      - 'false'
+      - 'false'
