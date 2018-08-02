@@ -411,11 +411,11 @@ Resources:
         - Key: Name
           Value: !Sub
             - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Database ${ResourceName}
-            - ResourceName: AllYourBaseIsBelongToUs
+            - ResourceName: AllYourDBaseIsBelongToUs
       VPCSecurityGroups:
         - !Ref databaseCCF34AC2SecurityGroup
     Metadata:
-      StackeryName: AllYourBaseIsBelongToUs
+      StackeryName: AllYourDBaseIsBelongToUs
   databaseCCF34AC2SubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
@@ -441,7 +441,7 @@ Resources:
         - Key: Name
           Value: !Sub
             - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Database ${ResourceName} VPC Security Group
-            - ResourceName: AllYourBaseIsBelongToUs
+            - ResourceName: AllYourDBaseIsBelongToUs
       VpcId: !Ref DefaultVPCId
   bastion51FDB4AD:
     Type: AWS::AutoScaling::AutoScalingGroup
