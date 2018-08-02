@@ -746,6 +746,10 @@ Resources:
             Stream: !GetAtt table3C0EA155.StreamArn
             StartingPosition: TRIM_HORIZON
             BatchSize: 1
+        Timer1:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 year)
 Parameters:
   StackeryStackTagName:
     Type: String
