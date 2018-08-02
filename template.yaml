@@ -81,13 +81,6 @@ Resources:
         SubnetIds:
           - !Ref virtualNetwork53CF3C38PrivateSubnet1
           - !Ref virtualNetwork53CF3C38PrivateSubnet2
-      Events:
-        timerDBA5914D:
-          Type: Schedule
-          Properties:
-            Schedule: rate(1 minute)
-          Metadata:
-            StackeryName: timeMe
       Environment:
         Variables:
           DB_INSTANCE: !Ref databaseCCF34AC2
