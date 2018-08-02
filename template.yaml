@@ -45,7 +45,7 @@ Resources:
     Properties:
       Name: !Sub
         - ${ResourceName} From Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName}
-        - ResourceName: apiFE76C470
+        - ResourceName: anotherAPI
       StageName: !Ref StackeryEnvironmentAPIGatewayStageName
       DefinitionBody:
         swagger: '2.0'
@@ -59,6 +59,8 @@ Resources:
                 uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${function61D00F31.Arn}/invocations
               responses: {}
       EndpointConfiguration: REGIONAL
+    Metadata:
+      StackeryName: anotherAPI
   function8E6C5467:
     Type: AWS::Serverless::Function
     Properties:
@@ -334,6 +336,8 @@ Resources:
             Id: StackeryCDN
             S3OriginConfig:
               OriginAccessIdentity: !Sub origin-access-identity/cloudfront/${cdn720D9D6OriginAccessIdentity}
+    Metadata:
+      StackeryName: distributeTheThings
   cdn720D9D6SSLCertificate:
     Type: Custom::StackeryUsEast1SSLCertificate
     Properties:
@@ -750,6 +754,8 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: rate(365 days)
+          Metadata:
+            StackeryName: timeMe
 Parameters:
   StackeryStackTagName:
     Type: String
@@ -782,4 +788,4 @@ Conditions:
       - 'false'
     - !Equals
       - 'false'
-      - 'false'
+      - ''
