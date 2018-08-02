@@ -749,7 +749,7 @@ Resources:
         Timer1:
           Type: Schedule
           Properties:
-            Schedule: rate(1 year)
+            Schedule: rate(365 days)
 Parameters:
   StackeryStackTagName:
     Type: String
