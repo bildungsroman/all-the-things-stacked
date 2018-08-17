@@ -58,6 +58,12 @@ Resources:
                 type: aws_proxy
                 uri: !Sub arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${function61D00F31.Arn}/invocations
               responses: {}
+            put:
+              responses: {}
+            post:
+              responses: {}
+            delete:
+              responses: {}
       EndpointConfiguration: REGIONAL
     Metadata:
       StackeryName: anotherAPI
