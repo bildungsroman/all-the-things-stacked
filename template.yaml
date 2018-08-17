@@ -102,11 +102,7 @@ Resources:
           - !Ref virtualNetwork53CF3C38PrivateSubnet1
           - !Ref virtualNetwork53CF3C38PrivateSubnet2
       Environment:
-        Variables:
-          DB_INSTANCE: !Ref databaseCCF34AC2
-          DB_ADDRESS: !GetAtt databaseCCF34AC2.Endpoint.Address
-          DB_PORT: !GetAtt databaseCCF34AC2.Endpoint.Port
-          DB_ARN: !Sub arn:aws:rds:${AWS::Region}:${AWS::AccountId}:db:${databaseCCF34AC2}
+        Variables: {}
     Metadata:
       StackeryName: logErrors
   virtualNetwork53CF3C38:
@@ -433,11 +429,11 @@ Resources:
         - Key: Name
           Value: !Sub
             - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Database ${ResourceName}
-            - ResourceName: AllYourDBaseIsBelongToUs
+            - ResourceName: AllYourDBaseIsBelongToUs2
       VPCSecurityGroups:
         - !Ref databaseCCF34AC2SecurityGroup
     Metadata:
-      StackeryName: AllYourDBaseIsBelongToUs
+      StackeryName: AllYourDBaseIsBelongToUs2
   databaseCCF34AC2SubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
@@ -463,7 +459,7 @@ Resources:
         - Key: Name
           Value: !Sub
             - Stackery Stack ${StackeryStackTagName} Environment ${StackeryEnvironmentTagName} Database ${ResourceName} VPC Security Group
-            - ResourceName: AllYourDBaseIsBelongToUs
+            - ResourceName: AllYourDBaseIsBelongToUs2
       VpcId: !Ref DefaultVPCId
   bastion51FDB4AD:
     Type: AWS::AutoScaling::AutoScalingGroup
