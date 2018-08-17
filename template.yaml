@@ -717,6 +717,8 @@ Resources:
             Schedule: rate(365 days)
           Metadata:
             StackeryName: timeMe
+  Dummy:
+    Type: AWS::CloudFormation::WaitConditionHandle
 Parameters:
   StackeryStackTagName:
     Type: String
