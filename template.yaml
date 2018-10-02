@@ -583,73 +583,6 @@ Resources:
 
             --==BOUNDARY==
           - SSHKeys: '{"<username1>":"<public key>","<username2>":"<public key>"}'
-  dockerTask236A051C:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      ContainerDefinitions:
-        - Image: hello-world
-          LogConfiguration:
-            LogDriver: awslogs
-            Options:
-              awslogs-group: !Ref dockerTask236A051CLogGroup
-              awslogs-region: !Ref AWS::Region
-              awslogs-stream-prefix: hello-world
-          Name: 0
-          Environment:
-            - Name: Key
-              Value: Value
-      Cpu: 1024
-      ExecutionRoleArn: !GetAtt dockerTask236A051CExecutionRole.Arn
-      Memory: 2048
-      NetworkMode: awsvpc
-      RequiresCompatibilities:
-        - FARGATE
-      TaskRoleArn: !GetAtt dockerTask236A051CTaskRole.Arn
-      Volumes: []
-    DependsOn: dockerTask236A051CLogGroup
-  dockerTask236A051CLogGroup:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      LogGroupName: !Sub /stackery/task/${AWS::StackName}-dockerTask236A051C/hello-world
-  dockerTask236A051CExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: !Sub ${AWS::StackName}-DockerTaskExecutionRole
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          Effect: Allow
-          Principal:
-            Service: ecs-tasks.amazonaws.com
-          Action: sts:AssumeRole
-      Policies:
-        - PolicyName: DownloadDockerImagesFromECR
-          PolicyDocument:
-            Version: 2012-10-17
-            Statement:
-              - Effect: Allow
-                Action:
-                  - logs:CreateLogStream
-                  - logs:PutLogEvents
-                Resource: !Sub arn:aws:logs:*:*:log-group:/stackery/task/${AWS::StackName}-*
-              - Effect: Allow
-                Action:
-                  - ecr:GetAuthorizationToken
-                  - ecr:BatchCheckLayerAvailability
-                  - ecr:GetDownloadUrlForLayer
-                  - ecr:BatchGetImage
-                Resource: '*'
-  dockerTask236A051CTaskRole:
-    Type: AWS::IAM::Role
-    Properties:
-      RoleName: !Sub ${AWS::StackName}-DockerTaskTaskRole
-      AssumeRolePolicyDocument:
-        Version: 2012-10-17
-        Statement:
-          Effect: Allow
-          Principal:
-            Service: ecs-tasks.amazonaws.com
-          Action: sts:AssumeRole
   queue9C8B3DAF:
     Type: AWS::SQS::Queue
     Properties:
@@ -739,11 +672,3 @@ Parameters:
 Metadata:
   StackeryErrorsTargets:
     function8E6C5467: {}
-Conditions:
-  cdn720D9D6StackeryStacksDomain: !Or
-    - !Equals
-      - 'false'
-      - 'false'
-    - !Equals
-      - 'false'
-      - ''
