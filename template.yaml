@@ -595,6 +595,9 @@ Resources:
               awslogs-region: !Ref AWS::Region
               awslogs-stream-prefix: hello-world
           Name: 0
+          Environment:
+            - Name: Key
+              Value: Value
       Cpu: 1024
       ExecutionRoleArn: !GetAtt dockerTask236A051CExecutionRole.Arn
       Memory: 2048
