@@ -12,7 +12,7 @@ Resources:
         - ResourceName: getWelcomePage
       CodeUri: src/getWelcomePage
       Handler: index.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs12.x
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
@@ -81,7 +81,7 @@ Resources:
         - ResourceName: logErrors
       CodeUri: src/logErrors
       Handler: index.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs12.x
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
@@ -393,7 +393,7 @@ Resources:
         - ResourceName: function96F17510
       CodeUri: src/function96F17510
       Handler: index.handler
-      Runtime: nodejs8.10
+      Runtime: nodejs12.x
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
